@@ -1,133 +1,24 @@
 import React from "react";
 
-function Form() {
-    return (
-        <div>
-            <Form_o></Form_o>
-            <NameForm></NameForm>
-            <textarea>Hi 这个是在Text area 里面的文本</textarea>
-            <FlavorForm></FlavorForm>
-            <Calculator>Calculator</Calculator>
-            <GetIp></GetIp>
-            <SplitPane
-                left={<Contacts/>}
-                right={<Chat/>}
-            ></SplitPane>
-        </div>
-    )
-}
-
-function Contacts() {
-    return (
-        <div>Contacts:</div>
-    )
-}
-
-function Chat() {
-    return (
-        <div>Chat:</div>
-    )
-}
-
-// 组合关系
-function SplitPane(props) {
-    return (
-        <div className={"SplitPane"}>
-            <div className={"SplitPane-left"}>{props.left}</div>
-            <div className={"SplitPane-right"}>{props.right}</div>
-        </div>
-    )
-}
-
-function GetIp() {
-    return (
-        <div>
-            <h1> getIp:{}</h1>
-        </div>
-    )
-}
-
-
-const GetIPs = (callback) => {
-    var ip_dups = {};
-    var RTCPeerConnection = window.RTCPeerConnection
-        || window.mozRTCPeerConnection
-        || window.webkitRTCPeerConnection;
-    var useWebKit = !!window.webkitRTCPeerConnection;
-    var mediaConstraints = {
-        optional: [{RtpDataChannels: true}]
-    };
-    // 这里就是需要的ICEServer了
-    var servers = {
-        iceServers: [
-            {urls: "stun:stun.services.mozilla.com"},
-            {urls: "stun:stun.l.google.com:19302"},
-        ]
-    };
-    var pc = new RTCPeerConnection(servers, mediaConstraints);
-
-    function handleCandidate(candidate) {
-        var ip_regex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/
-        var hasIp = ip_regex.exec(candidate)
-        if (hasIp) {
-            var ip_addr = ip_regex.exec(candidate)[1];
-            if (ip_dups[ip_addr] === undefined)
-                callback(ip_addr);
-            ip_dups[ip_addr] = true;
-        }
-    }
-
-    // 网络协商的过程
-    pc.onicecandidate = function (ice) {
-        if (ice.candidate) {
-            handleCandidate(ice.candidate.candidate);
-        }
-    };
-    pc.createDataChannel("");
-    //创建一个SDP(session description protocol)会话描述协议 是一个纯文本信息 包含了媒体和网络协商的信息
-    pc.createOffer(function (result) {
-        pc.setLocalDescription(result, function () {
-        }, function () {
-        });
-    }, function () {
-    });
-    setTimeout(function () {
-        var lines = pc.localDescription.sdp.split('\n');
-        lines.forEach(function (line) {
-            if (line.indexOf('a=candidate:') === 0)
-                handleCandidate(line);
-        });
-    }, 1000);
-}
-
-function BoilingVerdict(props) {
-    // const boil = <p className={"Form_boil"}>The water would boil.</p>;
-    // const not_boil = <p className={"Form_not_boil"}>The water would not boil.</p>;
-    if (props.celsius >= 100) {
-        return <p className={"Form_boil"}>The water would boil.</p>;
-    } else {
-        return <p className={"Form_not_boil"}>The water would not boil.</p>;
-    }
-}
-
 class Calculator extends React.Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
         this.state = {temperature: ""}
     }
 
     handleChange(event) {
+        console.log("handleChange:" + event.target)
         this.setState({temperature: event.target.value})
     }
 
-    onSubmit(event) {
-        const temperature = this.state.temperature;
-        if (temperature >= 100) {
-            alert("onSubmit success! boil " + this.state.temperature)
+    handleClick(event) {
+        var value = event.target.value;
+        console.log("handleClick:" + value)
+        if (value == NaN || value == "") {
+            event.preventDefault();
         } else {
-            alert("onSubmit success! not boil " + this.state.temperature)
+            alert(event.target.value)
         }
     }
 
@@ -138,11 +29,37 @@ class Calculator extends React.Component {
                 <fieldset>
                     <legend> Enter temperature in Celsius:</legend>
                     <input value={temperature} onChange={this.handleChange}/>
-                    <input type={"submit"} value={"提交"} onClick={this.onSubmit}/>
+                    <BoilingVerdict celsius={parseFloat(temperature)}></BoilingVerdict>
+                    <div style={{marginTop: 120, background: "0xff0000"}}>
+                        <fieldset>
+                            <button onClick={(event) => this.handleClick(event)} value={temperature}>onClick</button>
+                        </fieldset>
+                        <fieldset>
+                            <button onClick={this.handleClick} value={temperature}>onClick</button>
+                        </fieldset>
+                    </div>
+
                 </fieldset>
-                <BoilingVerdict celsius={parseFloat(temperature)}></BoilingVerdict>
+
             </div>
         );
+    }
+
+
+}
+
+/**
+ * 动态更新显示
+ * @param props
+ * @returns {JSX.Element}
+ * @constructor
+ */
+function BoilingVerdict(props) {
+    console.log("BoilingVerdict：" + props.celsius)
+    if (props.celsius >= 100) {
+        return <p className={"Form_boil"} style={{color: "#ff0000"}}>The water would boil.</p>;
+    } else {
+        return <p className={"Form_not_boil"} style={{color: "#000000"}}>The water would not boil.</p>;
     }
 }
 
@@ -167,7 +84,6 @@ class FlavorForm extends React.Component {
         return (
             <div>
                 <h1>选择你喜欢的选项</h1>
-
                 <form onSubmit={this.handleSubmit}>
                     <select value={this.state.value} onChange={this.handleChange}>
                         <option value={"graperfruit"}>葡萄柚</option>
@@ -186,20 +102,6 @@ class FlavorForm extends React.Component {
 
 }
 
-function Form_o() {
-    return (
-        <div>
-            {/*html写法*/}
-            <form>
-                <label>
-                    名字:
-                    <input type="text" name="name"/>
-                </label>
-                <input type="submit" value="提交"/>
-            </form>
-        </div>
-    )
-}
 
 class NameForm extends React.Component {
     constructor(props) {
@@ -231,5 +133,16 @@ class NameForm extends React.Component {
         )
     }
 }
+
+function Form() {
+    return (
+        <div>
+            <NameForm></NameForm>
+            <FlavorForm></FlavorForm>
+            <Calculator>Calculator</Calculator>
+        </div>
+    )
+}
+
 
 export default Form;

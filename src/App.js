@@ -26,8 +26,6 @@ function App() {
             <body className="body">
             <Square name={"name is Square"}></Square>
             <Welcome name={"tom"}></Welcome>
-            <Clock></Clock>
-            <Clock3 date={new Date()}></Clock3>
             <Toggle></Toggle>
             <LoggingButton></LoggingButton>
             <Space wrap>
@@ -122,47 +120,7 @@ class LoggingButton extends React.Component {
 }
 
 
-class Clock extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {date: new Date()};
-    }
 
-    componentDidMount() {
-        this.timerID = setInterval(() => this.tick(), 1000
-        );
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timerID);
-    }
-
-    tick() {
-        this.setState({date: new Date()});
-    }
-
-    render() {
-        return (
-            <div>
-                <h1>Hello, world!</h1>
-                <h2>It is {this.state.date.toLocaleDateString()} {this.state.date.toLocaleTimeString()}</h2>
-            </div>
-        );
-    }
-}
-
-class Clock3 extends React.Component {
-    render() {
-        return (
-            <div>
-                <h1>Hi World.</h1>
-                <h2>
-                    dateTime:{this.props.date.toLocaleTimeString()}
-                </h2>
-            </div>
-        );
-    }
-}
 
 class Welcome extends React.Component {
     render() {

@@ -61,7 +61,7 @@ function LoginButton(props) {
     console.log("LoginButton "+props.isLoggedIn);
     return (
         <button onClick={props.onClick}>
-            登陆  登陆 登陆 登陆 登陆 登陆
+            登录 登录 登录 登录 登录 登录
         </button>
     );
 }
@@ -70,7 +70,7 @@ function LogoutButton(props) {
     console.log("LogoutButton "+props.isLoggedIn);
     return (
         <button onClick={props.onClick}>
-            退出 退出 退出 退出 退出
+            退出 退出 退出 退出 退出 退出
         </button>
     );
 }

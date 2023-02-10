@@ -1,23 +1,45 @@
 import React from "react";
 
 class BlogC extends React.Component {
+
+    log(msg) {
+        console.log(msg)
+    }
+
     constructor(props) {
         super(props);
+        this.log("constructorconstructorconstructorconstructor")
         this.state = {count: 0}
         ///1、 这边绑定是必要的，这样 `this` 才能在回调函数中使用
         // 2、使用箭头函数，不需要绑定
         // this.handleClick = this.handleClick.bind(this);
+        this.handleClick2 = this.handleClick2.bind(this)
     }
 
+    /**
+     * 箭头函数
+     */
     handleClick = () => {
+        console.log("handleClick")
         this.setState(function (state) {
-            console.log(state.count)
+            console.log("handleClick:" + this.state.count)
+            console.log("handleClick:" + state.count)
             return {count: this.state.count + 1}
         })
+
     }
 
+    /**
+     * bind函数
+     */
+    handleClick2() {
+        console.log("handleClick2")
+        this.setState({count: this.state.count + 1});
+        console.log("handleClick2:" + this.state.count)
+    }
 
     render() {
+        console.log("render() render() render() ")
         return (
             <div>
                 <div>
@@ -25,6 +47,8 @@ class BlogC extends React.Component {
                 </div>
                 <div>
                     <button onClick={this.handleClick}>点击的次数:{this.state.count}</button>
+                    <br/>
+                    <button onClick={this.handleClick2}>点击的次数:{this.state.count}</button>
                 </div>
                 <Blog posts={posts}></Blog>
             </div>

@@ -9,16 +9,28 @@ import reportWebVitals from './reportWebVitals';
 import Highguide from "./highguide/Highguide";
 import AntD from "./antd/AntD";
 import ComponentsDemo from "./component/ComponentsDemo";
-import StateDemo from "./state/StateDemo";
 import WebSite from "./state/WebSite";
 import LoginControl from "./event/LoginControl";
 import Mailbox11 from "./calc/Mailbox";
 import BlogC from "./list/Blog";
+import Clock from "./state/Clock";
+import UserGist from "./ajax/UserGist";
+import ParentChild from "./form/ParentChild";
+import FlavorForm from "./form/FlavorForm";
+import HelloMessage from "./form/HelloMessage";
+import {MyComponent} from "./refs/MyComponent";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 var name = "wwww";
 root.render(
     <React.StrictMode>
+        <MyComponent></MyComponent>
+        <HelloMessage></HelloMessage>
+        <FlavorForm></FlavorForm>
+        <ParentChild></ParentChild>
+        <Form></Form>
+        <UserGist username={"usernameTOM"} lastGistUrl={"lastGistUrl"}></UserGist>
+        <Clock/>
         <BlogC></BlogC>
         <List></List>
         <Mailbox11></Mailbox11>
@@ -28,10 +40,8 @@ root.render(
         <AntD/>
         <App/>
         <Highguide/>
-        <Form></Form>
         <Self/>
         <List/>
-        <StateDemo/>
     </React.StrictMode>
 );
 
