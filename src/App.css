@@ -1,0 +1,38 @@
+.App {
+  background: #61dafb;
+}
+
+.App-logo {
+  height: 80px;
+  width: 80px;
+  pointer-events: none;
+}
+
+
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.App-Square{
+  padding: 10px;
+  background-color: green;
+  margin-top: 10px;
+}
+.headcls{
+  background: aquamarine;
+  background-color: #61dafb;
+}
+.body{
+  background-color: #282c54;
+  padding: 10px;
+  color: white;
+}
